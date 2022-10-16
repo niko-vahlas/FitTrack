@@ -26,9 +26,8 @@ that they are putting in their bodies.</p>
 
  <h4>User Stories</h4>
     <ul>
-        <li> As a user, I want to be able to make a food and view all the nutritional information.</li>
-        <li>As a user, I want to be able to make a recipe and view all the nutritional information</li>
-        <li>As a user, I want to be able to select a workout and see how many kcal it burns per hour</li>
-        <li>As a user, I want to be able to complete a day's kcal calculations and add it to a list of previous
-        days.</li>
+        <li> As a user, I want to be able to make a food and view the carbohydrates.</li>
+        <li>As a user, I want to be able to make a food and view the fat.</li>
+        <li>As a user, I want to be able to exit the application.</li>
+        <li>As a user, I want to be able to make a food and store it.</li>
     </ul>
