@@ -26,11 +26,12 @@ public class Foods {
     public static boolean addFoodToCurrent(String s, float consumed, List<Food> currentDayFood, List<Food> savedFood) {
         int length = savedFood.size();
         for (int i = 0; i < length; i++) {
-            Food currentFood = savedFood.get(i);
-            if (currentFood.getName() == s) {
-                Food newFood = Food.eatFood(savedFood.get(i));
+            Food currentSavedFood = savedFood.get(i);
+            String nameOfFood = currentSavedFood.getName();
+            if (nameOfFood.equals(s)) {
+                Food newFood = Food.eatFood(currentSavedFood);
                 newFood.setConsumed(consumed);
-                addFood(newFood, currentDayFood);
+                currentDayFood.add(newFood);
 
                 return true;
             }
@@ -88,12 +89,9 @@ public class Foods {
     // display the consumed foods
 
 
-    public List<Food> getFood(List<Food> foodList) {
-        return foodList;
-    }
-
     public static void addFood(Food f, List<Food> foodList) {
         foodList.add(f);
     }
+
 
 }

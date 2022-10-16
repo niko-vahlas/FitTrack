@@ -71,5 +71,39 @@ class FoodsTest {
         assertEquals(mostCurrentSaved.getConsumed(), 0);
     }
 
+    @Test
+        //
+    void testTotalProtein() {
+        chips.setConsumed(10);
+        chocolate.setConsumed(10);
+        savedFoods.add(chips);
+        savedFoods.add(chocolate);
+        assertTrue(model.Foods.getProteinFromFood(savedFoods) == 10);
+    }
+
+    @Test
+    void testTotalCarbs() {
+        chips.setConsumed(10);
+        chocolate.setConsumed(10);
+        savedFoods.add(chips);
+        savedFoods.add(chocolate);
+        assertTrue(model.Foods.getCarbFromFood(savedFoods) == 10);
+    }
+
+    @Test
+    void testTotalFat() {
+        chips.setConsumed(10);
+        chicken.setConsumed(10);
+        savedFoods.add(chips);
+        savedFoods.add(chicken);
+        assertTrue(model.Foods.getFatFromFood(savedFoods) == 10);
+    }
+
+    @Test
+    void testAddFood() {
+        model.Foods.addFood(chicken, savedFoods);
+        assertEquals(savedFoods.get(0), chicken);
+    }
+
 
 }

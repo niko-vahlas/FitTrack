@@ -56,5 +56,41 @@ class FoodTest {
         assertEquals(5, testFood.calculateFat());
     }
 
+    @Test
+    void testSetCarb() {
+        testFood.setCarb(10);
+        assertTrue(testFood.getCarb() == 10);
+    }
+
+    @Test
+    void testSetProtein() {
+        testFood.setProtein(10);
+        assertTrue(testFood.getProtein() == 10);
+    }
+
+    @Test
+    void testSetFat() {
+        testFood.setFat(10);
+        assertTrue(testFood.getFat() == 10);
+    }
+
+    @Test
+    void testSetUnit() {
+        testFood.setUnit("mL");
+        assertTrue(testFood.getUnit() == "mL");
+    }
+
+    @Test
+    void testSetName() {
+        testFood.setName("Josh");
+        assertTrue(testFood.getName() == "Josh");
+    }
+
+    @Test
+    void testSetServing() {
+        testFood.setServing(20);
+        assertTrue(testFood.getServing() == 20);
+    }
+
 
 }
