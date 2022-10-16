@@ -5,11 +5,6 @@ import java.util.List;
 
 
 public class Foods {
-    public static void setup() {
-        ArrayList<Food> savedFoods = new ArrayList<Food>();
-        ArrayList<Food> currentDayFood = new ArrayList<>();
-
-    }
 
     public static boolean searchFood(String s, List<Food> saved) {
         for (Food f : saved) {

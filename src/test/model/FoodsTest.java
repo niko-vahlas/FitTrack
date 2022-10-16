@@ -105,5 +105,28 @@ class FoodsTest {
         assertEquals(savedFoods.get(0), chicken);
     }
 
+    @Test
+    void testTotalCalFromFood() {
+        chicken.setConsumed(10);
+        chips.setConsumed(10);
+        currentDaysFood.add(chips);
+        currentDaysFood.add(chicken);
+        assertTrue(model.Foods.totalCalFromFood(currentDaysFood) == 170);
+    }
 
+    @Test
+    void addFoodToSavedNotPresent() {
+        savedFoods.add(chips);
+        assertTrue(model.Foods.addFoodToSaved(5, 5, 5, "ice cream", 5,
+                "mL", savedFoods));
+    }
+
+    @Test
+    void addFoodToSavedPresent() {
+        savedFoods.add(chips);
+        assertFalse(model.Foods.addFoodToSaved(5, 5, 5, "chips", 5,
+                "mL", savedFoods));
+    }
 }
+
+
