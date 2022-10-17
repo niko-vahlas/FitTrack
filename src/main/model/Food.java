@@ -4,16 +4,25 @@ import static model.Foods.*;
 
 // Represents a specific food
 public class Food {
-    private float fat;                // The grams of fat per serving size
-    private float carb;              // The grams of carbohydrates per serving size
-    private float protein;            // The grams of protein per serving size
-    private String name;        // The name of the food
-    private float serving;     // The serving size
+    private float fat;                  // The grams of fat per serving size
+    private float carb;                 // The grams of carbohydrates per serving size
+    private float protein;              // The grams of protein per serving size
+    private String name;                // The name of the food
+    private float serving;              // The serving size
 
-    private float consumed = 0; // Consumed
+    private float consumed = 0;         // Amount of food consumed
 
-    private String unit;
+    private String unit;                // Unit of food
 
+
+
+    /*
+     * REQUIRES: all floats to be above 0.
+     * EFFECTS: name of food, carbs per gram, protein per grams, serving and units are set.
+     *
+     *
+     *
+     */
     public Food(float fat, float carb, float protein, String name, float serving, String unit) {
         this.fat = fat;
         this.carb = carb;
@@ -80,22 +89,27 @@ public class Food {
         this.consumed = consumed;
     }
 
+    // EFFECTS: returns a foods total calories.
     public float calculateCalories() {
         return this.consumed / serving * (protein * 4 + carb * 4 + fat * 9);
     }
 
+    // EFFECTS: returns the grams of protein in a consumed food.
     public float calculateProtein() {
         return this.consumed / serving * protein;
     }
 
+    // EFFECTS: returns the grams of carbs in a consumed food.
     public float calculateCarbs() {
         return this.consumed / serving * carb;
     }
 
+    // EFFECTS: returns the grams of fat in a consumed food.
     public float calculateFat() {
         return this.consumed / serving * fat;
     }
 
+    // EFFECTS: takes a food and returns a copy of said food.
     public static Food eatFood(Food savedFood) {
         return (new Food(savedFood.fat, savedFood.carb, savedFood.protein, savedFood.name, savedFood.serving,
                 savedFood.unit));

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Foods {
 
+    // EFFECTS: returns true if there is a food name that matches the string, returns false otherwise
     public static boolean searchFood(String s, List<Food> saved) {
         for (Food f : saved) {
             if (f.getName().equals(s)) {
@@ -13,11 +14,16 @@ public class Foods {
             }
 
         }
-        return false;   // search for a food and return true if is there or false if it hasnt
+        return false;
     }
 
-    // This class is responsible for adding a food to the current foods consumed
-    // Checks if the food is indeed present in the saved foods.
+    /*
+    EFFECTS: returns true if the string matches the name of a food in a list of food, and
+    then adds the consumed amount of food to a different list.
+    returns false if string does not match.
+    REQUIRES: float greater than 0
+    MODIFIES: this and modifies food object
+     */
     public static boolean addFoodToCurrent(String s, float consumed, List<Food> currentDayFood, List<Food> savedFood) {
         int length = savedFood.size();
         for (int i = 0; i < length; i++) {
@@ -34,6 +40,11 @@ public class Foods {
         return false;
     }
 
+    /*
+     REQUIRES: all floats must be positive.
+     MODIFIES: This
+     EFFECTS: If the string not the name a food in a list, a new food with that name is added.
+     */
     public static boolean addFoodToSaved(float fat, float carb, float protein, String name, float serving, String unit,
                                          List<Food> saved) {
         if (!searchFood(name, saved)) {
@@ -43,7 +54,7 @@ public class Foods {
         return false;
     }
 
-
+    // EFFECTS: returns total calories in a list of foods in form of a float.
     public static float totalCalFromFood(List<Food> foods) {
         float kcal = 0;
         for (Food f : foods) {
@@ -52,6 +63,7 @@ public class Foods {
         return kcal;
     }
 
+    // EFFECTS: returns total protein in a list of foods in form of a float.
     public static float getProteinFromFood(List<Food> foods) {
         float protein = 0;
         for (Food f : foods) {
@@ -61,6 +73,7 @@ public class Foods {
         return protein;
     }
 
+    // EFFECTS: returns total fat in a list of foods in form of a float.
     public static float getFatFromFood(List<Food> foods) {
         float totalFat = 0;
         for (Food f : foods) {
@@ -70,6 +83,7 @@ public class Foods {
         return totalFat;
     }
 
+    // EFFECTS: returns total carbs in a list of foods in form of a float.
     public static float getCarbFromFood(List<Food> foods) {
         float totalCarb = 0;
         for (Food f : foods) {
@@ -79,11 +93,7 @@ public class Foods {
         return totalCarb;
     }
 
-    // repeat for carb
-    // repeat for fat
-    // display the consumed foods
-
-
+    // EFFECTS: adds food to list.
     public static void addFood(Food f, List<Food> foodList) {
         foodList.add(f);
     }
