@@ -79,7 +79,7 @@ public class FitnessApp {
 
 
         System.out.println("Calories: " + model.Foods.totalCalFromFood(currentDayFood));
-        System.out.println("Protein: " + model.Foods.totalCalFromFood(currentDayFood));
+        System.out.println("Protein: " + model.Foods.getProteinFromFood(currentDayFood));
         System.out.println("Fat: " + model.Foods.getFatFromFood(currentDayFood));
         System.out.println("Carb: " + model.Foods.getCarbFromFood(currentDayFood));
     }

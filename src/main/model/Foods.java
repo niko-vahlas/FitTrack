@@ -65,12 +65,12 @@ public class Foods {
 
     // EFFECTS: returns total protein in a list of foods in form of a float.
     public static float getProteinFromFood(List<Food> foods) {
-        float protein = 0;
+        float totalProtein = 0;
         for (Food f : foods) {
-            protein += f.calculateProtein();
+            totalProtein += f.calculateProtein();
         }
 
-        return protein;
+        return totalProtein;
     }
 
     // EFFECTS: returns total fat in a list of foods in form of a float.

@@ -26,8 +26,10 @@ that they are putting in their bodies.</p>
 
  <h4>User Stories</h4>
     <ul>
-        <li> As a user, I want to be able to make a food and view the carbohydrates.</li>
+        <li>As a user, I want to be able to make a food and view the carbohydrates.</li>
         <li>As a user, I want to be able to make a food and view the fat.</li>
         <li>As a user, I want to be able to exit the application.</li>
         <li>As a user, I want to be able to make a food and store it.</li>
+        <li>As a user, I want to be able to save the state of my application.</li>
+        <li>As a user, I want to be able to load the fitness app from file</li>
     </ul>
