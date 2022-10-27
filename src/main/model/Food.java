@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import static model.Foods.*;
 
 // Represents a specific food
-public class Food {
+public class Food implements Writable {
     private float fat;                  // The grams of fat per serving size
     private float carb;                 // The grams of carbohydrates per serving size
     private float protein;              // The grams of protein per serving size
@@ -23,13 +26,14 @@ public class Food {
      *
      *
      */
-    public Food(float fat, float carb, float protein, String name, float serving, String unit) {
+    public Food(float fat, float carb, float protein, String name, float serving, float consumed, String unit) {
         this.fat = fat;
         this.carb = carb;
         this.protein = protein;
         this.name = name;
         this.serving = serving;
         this.unit = unit;
+        this.consumed = consumed;
 
     }
 
@@ -112,7 +116,20 @@ public class Food {
     // EFFECTS: takes a food and returns a copy of said food.
     public static Food eatFood(Food savedFood) {
         return (new Food(savedFood.fat, savedFood.carb, savedFood.protein, savedFood.name, savedFood.serving,
-                savedFood.unit));
+                savedFood.consumed, savedFood.unit));
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("fat", fat);
+        json.put("carb", carb);
+        json.put("protein", protein);
+        json.put("serving", serving);
+        json.put("unit", unit);
+        json.put("consumed", consumed);
+        return json;
     }
 
 

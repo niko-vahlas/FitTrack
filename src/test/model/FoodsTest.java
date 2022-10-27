@@ -14,8 +14,8 @@ class FoodsTest {
     private Food popcorn;
     private Food chicken;
 
-    private List<Food> savedFoods;
-    private List<Food> currentDaysFood;
+    private Foods savedFoods;
+    private Foods currentDaysFood;
 
 
     @BeforeEach
@@ -24,8 +24,8 @@ class FoodsTest {
         chicken = new Food(5, 5, 5, "chips", 10, "grams");
         chocolate = new Food(5, 5, 5, "chips", 10, "grams");
         popcorn = new Food(5, 5, 5, "chips", 10, "grams");
-        savedFoods = new ArrayList<>();
-        currentDaysFood = new ArrayList<>();
+        savedFoods = new Foods();
+        currentDaysFood = new Foods();
 
 
     }
@@ -34,17 +34,17 @@ class FoodsTest {
     void testSearchFoodIfFoodIsNotPresent() {
 
 
-        savedFoods.add(chips);
-        savedFoods.add(chicken);
-        assertFalse(model.Foods.searchFood("red", savedFoods));
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chicken);
+        assertFalse(savedFoods.searchFood("red"));
 
 
     }
 
     @Test
     void testSearchFoodIfFoodIsPresent() {
-        savedFoods.add(chips);
-        savedFoods.add(chicken);
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chicken);
         assertTrue(model.Foods.searchFood("chips", savedFoods));
 
     }
@@ -52,18 +52,18 @@ class FoodsTest {
     @Test
         // Food is not in saved
 
-    void testAddFoodToCurrentNotSaved() {
-        savedFoods.add(chips);
-        assertFalse(model.Foods.addFoodToCurrent("chocolate", 50, currentDaysFood, savedFoods));
+    void testaddFoodFoodToCurrentNotSaved() {
+        savedFoods.addFood(chips);
+        assertFalse(model.Foods.addFoodFoodToCurrent("chocolate", 50, currentDaysFood, savedFoods));
 
     }
 
     @Test
         // Food is in saved
-    void testAddFoodToCurrentSaved() {
-        savedFoods.add(chips);
-        currentDaysFood.add(chicken);
-        assertTrue(model.Foods.addFoodToCurrent("chips", 50, currentDaysFood, savedFoods));
+    void testaddFoodFoodToCurrentSaved() {
+        savedFoods.addFood(chips);
+        currentDaysFood.addFood(chicken);
+        assertTrue(model.Foods.addFoodFoodToCurrent("chips", 50, currentDaysFood, savedFoods));
         Food mostCurrent = currentDaysFood.get(1);
         assertEquals(mostCurrent.getConsumed(), 50);
         assertEquals(mostCurrent.getName(), "chips");
@@ -76,32 +76,32 @@ class FoodsTest {
     void testTotalProtein() {
         chips.setConsumed(10);
         chocolate.setConsumed(10);
-        savedFoods.add(chips);
-        savedFoods.add(chocolate);
-        assertTrue(model.Foods.getProteinFromFood(savedFoods) == 10);
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chocolate);
+        assertTrue(savedFoods.getProteinFromFood() == 10);
     }
 
     @Test
     void testTotalCarbs() {
         chips.setConsumed(10);
         chocolate.setConsumed(10);
-        savedFoods.add(chips);
-        savedFoods.add(chocolate);
-        assertTrue(model.Foods.getCarbFromFood(savedFoods) == 10);
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chocolate);
+        assertTrue(savedFoods.getCarbFromFood() == 10);
     }
 
     @Test
     void testTotalFat() {
         chips.setConsumed(10);
         chicken.setConsumed(10);
-        savedFoods.add(chips);
-        savedFoods.add(chicken);
-        assertTrue(model.Foods.getFatFromFood(savedFoods) == 10);
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chicken);
+        assertTrue(savedFoods.getFatFromFood() == 10);
     }
 
     @Test
-    void testAddFood() {
-        model.Foods.addFood(chicken, savedFoods);
+    void testaddFoodFood() {
+        savedFoods.addFood(chicken);
         assertEquals(savedFoods.get(0), chicken);
     }
 
@@ -109,22 +109,22 @@ class FoodsTest {
     void testTotalCalFromFood() {
         chicken.setConsumed(10);
         chips.setConsumed(10);
-        currentDaysFood.add(chips);
-        currentDaysFood.add(chicken);
-        assertTrue(model.Foods.totalCalFromFood(currentDaysFood) == 170);
+        currentDaysFood.addFood(chips);
+        currentDaysFood.addFood(chicken);
+        assertTrue(currentDaysFood.totalCalFromFood() == 170);
     }
 
     @Test
-    void addFoodToSavedNotPresent() {
-        savedFoods.add(chips);
-        assertTrue(model.Foods.addFoodToSaved(5, 5, 5, "ice cream", 5,
+    void addFoodFoodToSavedNotPresent() {
+        savedFoods.addFood(chips);
+        assertTrue(model.Foods.addFoodFoodToSaved(5, 5, 5, "ice cream", 5,
                 "mL", savedFoods));
     }
 
     @Test
-    void addFoodToSavedPresent() {
-        savedFoods.add(chips);
-        assertFalse(model.Foods.addFoodToSaved(5, 5, 5, "chips", 5,
+    void addFoodFoodToSavedPresent() {
+        savedFoods.addFood(chips);
+        assertFalse(model.Foods.addFoodFoodToSaved(5, 5, 5, "chips", 5,
                 "mL", savedFoods));
     }
 }

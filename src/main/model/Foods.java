@@ -1,14 +1,23 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+import ui.FitnessApp;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Foods {
+// list of foods
+public class Foods implements Writable {
+    private List<Food> foods;
+    public Foods() {
+        this.foods = new ArrayList<>();
+    }
 
     // EFFECTS: returns true if there is a food name that matches the string, returns false otherwise
-    public static boolean searchFood(String s, List<Food> saved) {
-        for (Food f : saved) {
+    public boolean searchFood(String s) {
+        for (Food f : foods) {
             if (f.getName().equals(s)) {
                 return true;
             }
@@ -24,20 +33,17 @@ public class Foods {
     REQUIRES: float greater than 0
     MODIFIES: this and modifies food object
      */
-    public static boolean addFoodToCurrent(String s, float consumed, List<Food> currentDayFood, List<Food> savedFood) {
-        int length = savedFood.size();
+    public Food takeFoodFromSaved(String s) {
+        int length = foods.size();
         for (int i = 0; i < length; i++) {
-            Food currentSavedFood = savedFood.get(i);
+            Food currentSavedFood = foods.get(i);
             String nameOfFood = currentSavedFood.getName();
             if (nameOfFood.equals(s)) {
                 Food newFood = Food.eatFood(currentSavedFood);
-                newFood.setConsumed(consumed);
-                currentDayFood.add(newFood);
-
-                return true;
+                return newFood;
             }
         }
-        return false;
+        return new Food(5, 5, 5, "Red", 5, 5,  "red");
     }
 
     /*
@@ -45,17 +51,16 @@ public class Foods {
      MODIFIES: This
      EFFECTS: If the string not the name a food in a list, a new food with that name is added.
      */
-    public static boolean addFoodToSaved(float fat, float carb, float protein, String name, float serving, String unit,
-                                         List<Food> saved) {
-        if (!searchFood(name, saved)) {
-            addFood(new Food(fat, carb, protein, name, serving, unit), saved);
+    public boolean addFoodToSaved(float fat, float carb, float protein, String name, float serving, String unit) {
+        if (!searchFood(name)) {
+            addFood(new Food(fat, carb, protein, name, serving, 0, unit));
             return true;
         }
         return false;
     }
 
     // EFFECTS: returns total calories in a list of foods in form of a float.
-    public static float totalCalFromFood(List<Food> foods) {
+    public float totalCalFromFood() {
         float kcal = 0;
         for (Food f : foods) {
             kcal += f.calculateCalories();
@@ -64,7 +69,7 @@ public class Foods {
     }
 
     // EFFECTS: returns total protein in a list of foods in form of a float.
-    public static float getProteinFromFood(List<Food> foods) {
+    public float getProteinFromFood() {
         float totalProtein = 0;
         for (Food f : foods) {
             totalProtein += f.calculateProtein();
@@ -74,7 +79,7 @@ public class Foods {
     }
 
     // EFFECTS: returns total fat in a list of foods in form of a float.
-    public static float getFatFromFood(List<Food> foods) {
+    public float getFatFromFood() {
         float totalFat = 0;
         for (Food f : foods) {
             totalFat += f.calculateFat();
@@ -84,7 +89,7 @@ public class Foods {
     }
 
     // EFFECTS: returns total carbs in a list of foods in form of a float.
-    public static float getCarbFromFood(List<Food> foods) {
+    public float getCarbFromFood() {
         float totalCarb = 0;
         for (Food f : foods) {
             totalCarb += f.calculateCarbs();
@@ -94,8 +99,28 @@ public class Foods {
     }
 
     // EFFECTS: adds food to list.
-    public static void addFood(Food f, List<Food> foodList) {
-        foodList.add(f);
+    public void addFood(Food f) {
+        this.foods.add(f);
+    }
+
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Foods", listsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray listsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Food f : foods) {
+            jsonArray.put(f.toJson());
+        }
+
+        return jsonArray;
     }
 
 

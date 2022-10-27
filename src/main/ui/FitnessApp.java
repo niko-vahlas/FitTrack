@@ -1,20 +1,38 @@
 package ui;
 
-
+import model.Foods;
 import model.Food;
+import persistence.JsonReaderCurrentFood;
+import persistence.JsonReaderSavedFood;
+import persistence.JsonWriterCurrentFood;
+import persistence.JsonWriterSavedFood;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
 // Bank teller application
 public class FitnessApp {
+
+    private static final String JSON_STORE_SAVED_FOODS = "./data/savedfoods.json";
+    private static final String JSON_STORE_CURRENT_FOODS = "./data/currentfoods.json";
     private Scanner input;
-    ArrayList<Food> savedFoods;
-    ArrayList<Food> currentDayFood;
+    Foods savedFoods;
+    Foods currentDayFood;
+
+    private JsonWriterCurrentFood jsonWriterCurrentFood;
+    private JsonWriterSavedFood jsonWriterSavedFood;
+    private JsonReaderCurrentFood jsonReaderCurrentFood;
+    private JsonReaderSavedFood jsonReaderSavedFood;
 
     // EFFECTS: runs the teller application
-    public FitnessApp() {
+    public FitnessApp() throws FileNotFoundException {
+        jsonWriterCurrentFood = new JsonWriterCurrentFood(JSON_STORE_CURRENT_FOODS);
+        jsonReaderCurrentFood = new JsonReaderCurrentFood(JSON_STORE_CURRENT_FOODS);
+        jsonWriterSavedFood = new JsonWriterSavedFood(JSON_STORE_SAVED_FOODS);
+        jsonReaderSavedFood = new JsonReaderSavedFood(JSON_STORE_SAVED_FOODS);
         runApp();
     }
 
@@ -50,16 +68,22 @@ public class FitnessApp {
             addNewFoodForDay();
         } else if (command.equals("v")) {
             addNewFoodToList();
+        } else if (command.equals("s")) {
+            saveCurrentFoods();
+            saveSavedFoods();
+        } else if (command.equals("l")) {
+            loadCurrentFoods();
+            loadSavedFoods();
         } else {
             System.out.println("Selection not valid...");
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes accounts
+    // EFFECTS: initializes food lists
     private void init() {
-        savedFoods = new ArrayList<Food>();
-        currentDayFood = new ArrayList<Food>();
+        savedFoods = new Foods();
+        currentDayFood = new Foods();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
@@ -70,22 +94,24 @@ public class FitnessApp {
         System.out.println("\td -> display nutrition information for the day");
         System.out.println("\tw -> add food");
         System.out.println("\tv -> add food to database");
+        System.out.println("\ts -> save food data");
+        System.out.println("\tl -> load food data");
         System.out.println("\tq -> quit");
     }
 
     // MODIFIES: this
-    // EFFECTS: conducts a deposit transaction
+    // EFFECTS: displays the nutrition information of a food list
     private void displayNutrition() {
 
 
-        System.out.println("Calories: " + model.Foods.totalCalFromFood(currentDayFood));
-        System.out.println("Protein: " + model.Foods.getProteinFromFood(currentDayFood));
-        System.out.println("Fat: " + model.Foods.getFatFromFood(currentDayFood));
-        System.out.println("Carb: " + model.Foods.getCarbFromFood(currentDayFood));
+        System.out.println("Calories: " + currentDayFood.totalCalFromFood());
+        System.out.println("Protein: " + currentDayFood.getProteinFromFood());
+        System.out.println("Fat: " + currentDayFood.getFatFromFood());
+        System.out.println("Carb: " + currentDayFood.getCarbFromFood());
     }
 
     // MODIFIES: this
-    // EFFECTS: conducts a withdraw transaction
+    // EFFECTS: adds a food to the days list
     private void addNewFoodForDay() {
         System.out.println("Enter food name");
         String foodName = input.next();
@@ -96,7 +122,11 @@ public class FitnessApp {
         if (foodQuantity < 0.0) {
             System.out.println("Cannot consume negative food...");
 
-        } else if (model.Foods.addFoodToCurrent(foodName, foodQuantity, currentDayFood, savedFoods)) {
+        } else if (savedFoods.searchFood(foodName)) {
+            Food newFood = savedFoods.takeFoodFromSaved(foodName);
+            newFood.setConsumed(foodQuantity);
+            currentDayFood.addFood(newFood);
+
             System.out.println("Food has been added to your daily foods");
 
         } else {
@@ -107,7 +137,7 @@ public class FitnessApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: conducts a transfer transaction
+    // EFFECTS: adds a new food to the list
     private void addNewFoodToList() {
         System.out.println("Enter grams of fat per serving:");
         float gramsFat = input.nextFloat();
@@ -122,13 +152,55 @@ public class FitnessApp {
         System.out.println("Enter the unit:");
         String unit = input.next();
 
-        if (model.Foods.addFoodToSaved(gramsFat, gramsCarb, gramsProtein, name, servingSize, unit, savedFoods)) {
+        if (savedFoods.addFoodToSaved(gramsFat, gramsCarb, gramsProtein, name, servingSize, unit)) {
             System.out.println("Food has been added to the main list and is available for selection.");
         } else {
             System.out.println("Food is already present in the list.");
         }
 
 
+    }
+
+    // EFFECTS: saves the saved foods to file
+    private void saveSavedFoods() {
+        try {
+            jsonWriterSavedFood.open();
+            jsonWriterSavedFood.writeSavedFoods(savedFoods);
+            jsonWriterSavedFood.close();
+            System.out.println("Saved saved foods to " + JSON_STORE_SAVED_FOODS);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE_SAVED_FOODS);
+        }
+    }
+
+    // EFFECTS: saves the current foods to file
+    private void saveCurrentFoods() {
+        try {
+            jsonWriterCurrentFood.open();
+            jsonWriterCurrentFood.writeCurrentFoods(currentDayFood);
+            jsonWriterCurrentFood.close();
+            System.out.println("Saved current foods to " + JSON_STORE_CURRENT_FOODS);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE_CURRENT_FOODS);
+        }
+    }
+
+    private void loadSavedFoods() {
+        try {
+            savedFoods = jsonReaderSavedFood.read();
+            System.out.println("Loaded saved foods" + " from " + JSON_STORE_SAVED_FOODS);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE_SAVED_FOODS);
+        }
+    }
+
+    private void loadCurrentFoods() {
+        try {
+            currentDayFood = jsonReaderCurrentFood.read();
+            System.out.println("Loaded current day foods" + " from " + JSON_STORE_SAVED_FOODS);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE_SAVED_FOODS);
+        }
     }
 
 
