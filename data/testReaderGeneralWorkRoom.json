@@ -1,0 +1,20 @@
+{"Foods": [
+{
+"carb": 10,
+"consumed": 10,
+"unit": "mL",
+"protein": 15,
+"name": "ice cream",
+"fat": 5,
+"serving": 10
+},
+{
+"carb": 20,
+"consumed": 5,
+"unit": "grams",
+"protein": 30,
+"name": "turkey",
+"fat": 10,
+"serving": 10
+}
+]}

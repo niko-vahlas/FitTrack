@@ -13,7 +13,7 @@ public class Food implements Writable {
     private String name;                // The name of the food
     private float serving;              // The serving size
 
-    private float consumed = 0;         // Amount of food consumed
+    private float consumed;         // Amount of food consumed
 
     private String unit;                // Unit of food
 

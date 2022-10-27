@@ -15,7 +15,7 @@ class FoodTest {
 
     @BeforeEach
     void runBefore() {
-        testFood = new Food(5, 5, 5, "chips", 10, "grams");
+        testFood = new Food(5, 5, 5, "chips", 10, 0, "grams");
     }
 
     @Test

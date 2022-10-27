@@ -11,6 +11,7 @@ import java.util.List;
 // list of foods
 public class Foods implements Writable {
     private List<Food> foods;
+    
     public Foods() {
         this.foods = new ArrayList<>();
     }
@@ -103,7 +104,13 @@ public class Foods implements Writable {
         this.foods.add(f);
     }
 
+    public int numFood() {
+        return foods.size();
+    }
 
+    public List<Food> getFoods() {
+        return foods;
+    }
 
     @Override
     public JSONObject toJson() {

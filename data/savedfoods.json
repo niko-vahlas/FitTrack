@@ -1,9 +1,20 @@
-{"Foods": [{
-    "carb": 5,
-    "consumed": 0,
-    "unit": "5",
-    "protein": 5,
-    "name": "5",
-    "fat": 5,
-    "serving": 5
-}]}
+{"Foods": [
+    {
+        "carb": 5,
+        "consumed": 0,
+        "unit": "5",
+        "protein": 5,
+        "name": "red",
+        "fat": 5,
+        "serving": 5
+    },
+    {
+        "carb": 5,
+        "consumed": 0,
+        "unit": "5",
+        "protein": 5,
+        "name": "5",
+        "fat": 5,
+        "serving": 5
+    }
+]}
