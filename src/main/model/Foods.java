@@ -11,7 +11,7 @@ import java.util.List;
 // list of foods
 public class Foods implements Writable {
     private List<Food> foods;
-    
+
     public Foods() {
         this.foods = new ArrayList<>();
     }
