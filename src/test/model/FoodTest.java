@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static model.Food.eatFood;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FoodTest {
@@ -90,6 +91,12 @@ class FoodTest {
     void testSetServing() {
         testFood.setServing(20);
         assertTrue(testFood.getServing() == 20);
+    }
+
+    @Test
+    void eatFoodTest() {
+        Food newFood = eatFood(testFood);
+        assertEquals(newFood.getName(), testFood.getName());
     }
 
 

@@ -32,14 +32,21 @@ class FoodsTest {
 
     @Test
     void testSearchFoodIfFoodIsNotPresent() {
-
-
         savedFoods.addFood(chips);
         savedFoods.addFood(chicken);
         assertFalse(savedFoods.searchFood("red"));
 
 
     }
+    @Test
+    void testSearchFoodIfFoodPresent() {
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chicken);
+        assertTrue(savedFoods.searchFood("chips"));
+
+
+    }
+
 
 
 
@@ -86,9 +93,30 @@ class FoodsTest {
         assertTrue(currentDaysFood.totalCalFromFood() == 170);
     }
 
-
-
-
+    @Test
+    void addFoodToSavedTestInList() {
+        savedFoods.addFood(chips);
+        assertFalse(savedFoods.addFoodToSaved(5, 5, 5, "chips", 5, "grams"));
+        assertTrue(savedFoods.addFoodToSaved(5, 5, 5, "chocolate", 5, "grams"));
+        List<Food> Foods = savedFoods.getFoods();
+        Food AddedFood = Foods.get(1);
+        String foodName = AddedFood.getName();
+        assertTrue(foodName.equals( "chocolate"));
 }
+
+@Test
+    void takeFoodFromSaved() {
+        savedFoods.addFood(chips);
+        Food newFood = savedFoods.takeFoodFromSaved("chips");
+        String nameNewFood = newFood.getName();
+        assertTrue("chips".equals(nameNewFood));
+        Food newFoods = savedFoods.takeFoodFromSaved("blue");
+        assertTrue(newFoods.getName().equals("Red"));
+
+
+    }
+}
+
+
 
 
