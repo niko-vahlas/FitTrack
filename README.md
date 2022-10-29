@@ -33,3 +33,6 @@ that they are putting in their bodies.</p>
         <li>As a user, I want to be able to save the state of my application.</li>
         <li>As a user, I want to be able to load the fitness app from file</li>
     </ul>
+ 
+<p>All persistence classes are based on the supplied Workroom example for CPSC 210.</p>
+<p>All Json classes are based on the supplied Workroom example for CPSC 210.</p>

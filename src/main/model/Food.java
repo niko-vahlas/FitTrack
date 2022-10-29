@@ -22,9 +22,6 @@ public class Food implements Writable {
     /*
      * REQUIRES: all floats to be above 0.
      * EFFECTS: name of food, carbs per gram, protein per grams, serving and units are set.
-     *
-     *
-     *
      */
     public Food(float fat, float carb, float protein, String name, float serving, float consumed, String unit) {
         this.fat = fat;

@@ -39,15 +39,15 @@ public class JsonReaderCurrentFood {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses workroom from JSON object and returns it
+    // EFFECTS: parses foods from JSON object and returns it
     private Foods parseFoods(JSONObject jsonObject) {
         Foods foods = new Foods();
         addFoods(foods, jsonObject);
         return foods;
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // MODIFIES: foods
+    // EFFECTS: parses foods from JSON object and adds them to foods class
     private void addFoods(Foods foods, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("Foods");
         for (Object json : jsonArray) {
@@ -56,8 +56,8 @@ public class JsonReaderCurrentFood {
         }
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
+    // MODIFIES: foods
+    // EFFECTS: parses food from JSON object and adds it to Foods
     private void addFood(Foods foods, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         float fat = (jsonObject.getFloat("fat"));

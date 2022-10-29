@@ -8,7 +8,7 @@ import ui.FitnessApp;
 import java.util.ArrayList;
 import java.util.List;
 
-// list of foods
+// represents a list of foods
 public class Foods implements Writable {
     private List<Food> foods;
 
@@ -28,11 +28,9 @@ public class Foods implements Writable {
     }
 
     /*
-    EFFECTS: returns true if the string matches the name of a food in a list of food, and
-    then adds the consumed amount of food to a different list.
-    returns false if string does not match.
-    REQUIRES: float greater than 0
-    MODIFIES: this and modifies food object
+    EFFECTS: returns a copy of a food from a list of foods
+    REQUIRES: a food name that is present in a list of foods
+    MODIFIES: this
      */
     public Food takeFoodFromSaved(String s) {
         int length = foods.size();
@@ -48,7 +46,7 @@ public class Foods implements Writable {
     }
 
     /*
-     REQUIRES: all floats must be positive.
+     REQUIRES: all floats must be whole numbers.
      MODIFIES: This
      EFFECTS: If the string not the name a food in a list, a new food with that name is added.
      */
@@ -104,10 +102,12 @@ public class Foods implements Writable {
         this.foods.add(f);
     }
 
+    // EFFECTS: returns size of food list
     public int numFood() {
         return foods.size();
     }
 
+    // EFFECTS: returns list of foods
     public List<Food> getFoods() {
         return foods;
     }
@@ -119,7 +119,7 @@ public class Foods implements Writable {
         return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns things in this food list as a JSON array
     private JSONArray listsToJson() {
         JSONArray jsonArray = new JSONArray();
 
