@@ -185,6 +185,7 @@ public class FitnessApp {
         }
     }
 
+    // EFFECTS: loads saved food list from file
     private void loadSavedFoods() {
         try {
             savedFoods = jsonReaderSavedFood.read();
@@ -194,6 +195,7 @@ public class FitnessApp {
         }
     }
 
+    // EFFECTS: loads current food list from file
     private void loadCurrentFoods() {
         try {
             currentDayFood = jsonReaderCurrentFood.read();
