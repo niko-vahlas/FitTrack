@@ -9,7 +9,7 @@ import java.io.*;
 import model.Foods;
 import java.util.List;
 
-// Represents a writer that writes JSON representation of workroom to file
+// Represents a writer that writes JSON representation of Foods to file
 public class JsonWriterSavedFood {
     private static final int TAB = 4;
     private PrintWriter writer;

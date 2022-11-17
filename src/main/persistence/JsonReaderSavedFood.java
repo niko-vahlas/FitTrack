@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// Represents a reader that reads workroom from JSON data stored in file
+// Represents a reader that reads Foods from JSON data stored in file
 public class JsonReaderSavedFood {
     private String source;
 

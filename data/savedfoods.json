@@ -1,9 +1,9 @@
 {"Foods": [{
     "carb": 5,
     "consumed": 0,
-    "unit": "egg",
-    "protein": 10,
-    "name": "hard boiled egg",
+    "unit": "grams",
+    "protein": 5,
+    "name": "chips",
     "fat": 5,
-    "serving": 1
+    "serving": 5
 }]}
