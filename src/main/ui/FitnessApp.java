@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-// Bank teller application
+
+// Fitness application
 public class FitnessApp {
 
     private static final String JSON_STORE_SAVED_FOODS = "./data/savedfoods.json";

@@ -27,6 +27,16 @@ public class Foods implements Writable {
         return false;
     }
 
+    // EFFECTS: returns true if there is a food name that matches the string, returns false otherwise
+    public void removeFood(String s) {
+        for (Food f : foods) {
+            if (f.getName().equals(s)) {
+                foods.remove(f);
+            }
+
+        }
+    }
+
     /*
     EFFECTS: returns a copy of a food from a list of foods
     REQUIRES: a food name that is present in a list of foods
