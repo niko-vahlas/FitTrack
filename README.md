@@ -36,3 +36,41 @@ that they are putting in their bodies.</p>
  
 <p>All persistence classes are based on the supplied Workroom example for CPSC 210.</p>
 <p>All Json classes are based on the supplied Workroom example for CPSC 210.</p>
+<p>The ConsumedFoodsPanel and FoodDatabase Panel are based on the List demo from  
+https://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html</p>
+<p>The Gui is based on the tabbed pane demo from   https://docs.oracle.com/javase/tutorial/uiswing
+/examples/components/index.html</p>
+
+<h1>Instructions for Grader</h1>
+<h4>How to generate event 1</h4>
+<ol>
+<li>Run program</li>
+<li>Click on the last tab</li>
+<li>Click add a food and fill out the fields with appropriate values</li>
+<li>The food should be on the list</li>
+</ol>
+
+<h4>How to generate event 2</h4>
+<ol>
+<li>Click on the last tab</li>
+<li>Click on the food that is on the list and hit delete</li>
+<li>The food will be deleted off the list</li>
+</ol>
+
+<h4>Visual component</h4>
+<ol>
+<li>Click on the first tab</li>
+<li>You will see the photo</li>
+</ol>
+
+<h4>Save</h4>
+<ol>
+<li>Click on the first tab</li>
+<li>Click save</li>
+</ol>
+
+<h4>Reload</h4>
+<ol>
+<li>Click on the first tab</li>
+<li>Click load</li>
+</ol>

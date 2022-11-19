@@ -1,9 +1,9 @@
 {"Foods": [{
-    "carb": 5,
+    "carb": 0,
     "consumed": 0,
-    "unit": "grams",
-    "protein": 5,
-    "name": "chips",
+    "unit": "lbs",
+    "protein": 100,
+    "name": "luka",
     "fat": 5,
     "serving": 5
 }]}

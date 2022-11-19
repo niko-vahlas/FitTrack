@@ -21,7 +21,7 @@ class FoodsTest {
     @BeforeEach
     void runBefore() {
         chips = new Food(5, 5, 5, "chips", 10, 0, "grams");
-        chicken = new Food(5, 5, 5, "chips", 10, 0,"grams");
+        chicken = new Food(5, 5, 5, "chicken", 10, 0,"grams");
         chocolate = new Food(5, 5, 5, "chips", 10, 0,"grams");
         popcorn = new Food(5, 5, 5, "chips", 10, 0,"grams");
         savedFoods = new Foods();
@@ -114,6 +114,15 @@ class FoodsTest {
         assertTrue(newFoods.getName().equals("Red"));
 
 
+    }
+
+    @Test
+    void removeFoodFromSaved() {
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chicken);
+        savedFoods.removeFood("chips");
+        List<Food> foodsSaved = savedFoods.getFoods();
+        assertTrue(foodsSaved.size() == 1);
     }
 }
 

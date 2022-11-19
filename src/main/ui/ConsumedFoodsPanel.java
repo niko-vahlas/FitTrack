@@ -8,36 +8,20 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-/* Test().java requires no other files. */
+// Represents the consumed foods panel, the second panel
 public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener {
     private JList list;
-    private DefaultListModel listModel;
+    private static DefaultListModel listModel;
 
     private static final String addFoodString = "Add Food";
     private static final String deleteFoodString = "Delete Food";
     private JButton deleteButton;
     private JTextField foodName;
-    private Foods currentFoods;
-    private Foods savedFoods;
 
-
+    // Constructs the consumed foods panel
     public ConsumedFoodsPanel() {
         super(new BorderLayout());
-        //this.currentFoods = currentFoods;
-        //this.savedFoods = savedFoods;
         listModel = new DefaultListModel();
-        /*for (Food f : currentFoods.getFoods()) {
-            String name = f.getName();
-            String unit = f.getUnit();
-            String consumed = String.valueOf(f.getConsumed());
-            int nameLength = name.length();
-            int unitLength = unit.length();
-            int consumedLength = consumed.length();
-
-         */
-        listModel.addElement("Example food 0 0");
-
-
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -45,24 +29,23 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
         list.addListSelectionListener(this);
         list.setVisibleRowCount(5);
         JScrollPane listScrollPane = new JScrollPane(list);
-
         JButton addButton = new JButton(addFoodString);
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand(addFoodString);
         addButton.addActionListener(addListener);
         addButton.setEnabled(false);
-
         deleteButton = new JButton(deleteFoodString);
         deleteButton.setActionCommand(deleteFoodString);
         deleteButton.addActionListener(new DeleteListener());
-
         foodName = new JTextField(10);
         foodName.addActionListener(addListener);
         foodName.getDocument().addDocumentListener(addListener);
-        String name = listModel.getElementAt(
-                list.getSelectedIndex()).toString();
 
-        //Create a panel that uses BoxLayout.
+        extracted(listScrollPane, addButton);
+    }
+
+    // EFFECTS: Extracted method from above, adds new JPane and lays out buttons and list
+    private void extracted(JScrollPane listScrollPane, JButton addButton) {
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane,
                 BoxLayout.LINE_AXIS));
@@ -73,27 +56,31 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
         buttonPane.add(foodName);
         buttonPane.add(addButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
         add(listScrollPane, BorderLayout.CENTER);
         add(buttonPane, BorderLayout.PAGE_END);
     }
 
-    public void setSavedFoods() {
-        this.savedFoods = savedFoods;
+    //EFFECTS: constructs delete button
+    private void extracted() {
+
     }
 
-    public void setCurrentFoods() {
-        this.currentFoods = currentFoods;
+    //MODIFIES: this
+    //EFFECTS: sets the current food list
+    public static void setCurrentFoods() {
         for (Food f : Gui.currentDayFood.getFoods()) {
-            String newFood = f.getName() + " " + f.getConsumed();
+            String newFood = f.getName() + " " + f.calculateCalories() + " kcal";
 
             listModel.addElement(newFood);
-
 
         }
     }
 
+
+    /// Listener for delete food button
     class DeleteListener implements ActionListener {
+        // MODIFIES: this and currentDayFood
+        // EFFECTS: deletes selected food
         public void actionPerformed(ActionEvent e) {
             //This method can be called only if
             //there's a valid selection
@@ -101,17 +88,18 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
             int index = list.getSelectedIndex();
 
             String foodName = (String) listModel.getElementAt(index);
-            Gui.currentDayFood.removeFood(foodName);
+            String[] splitString = foodName.split(" ");
+            Gui.currentDayFood.removeFood(splitString[0]);
             listModel.remove(index);
 
             int size = listModel.getSize();
 
-            if (size == 0) { //Nobody's left, disable firing.
+            if (size == 0) { //No foods are left, disable deleting.
                 deleteButton.setEnabled(false);
 
             } else { //Select an index.
                 if (index == listModel.getSize()) {
-                    //removed item in last position
+                    //removed food in last position
                     index--;
                 }
 
@@ -121,22 +109,23 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
         }
     }
 
-    //This listener is shared by the text field and the hire button.
+    // This listener is shared by the text field and the add button.
     class AddListener implements ActionListener, DocumentListener {
         private boolean alreadyEnabled = false;
         private JButton button;
 
+        // EFFECTS: Makes new add listener button
         public AddListener(JButton button) {
             this.button = button;
         }
 
-        //Required by ActionListener.
+        //MODIFIES: this
+        //EFFECTS: Performs the adding of a food
         public void actionPerformed(ActionEvent e) {
             String name = foodName.getText();
-            String[] splitString = name.split(" ");
 
-            //User didn't type in a unique name...
-            if ((splitString[0].equals("")) || (!notInDatabase(splitString[0])))  {
+            //User didn't type in a unique food...
+            if ((name.equals("")) || (!notInDatabase(name)))  {
                 Toolkit.getDefaultToolkit().beep();
                 foodName.requestFocusInWindow();
                 foodName.selectAll();
@@ -150,9 +139,9 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
                 index++;
             }
 
-
-            //If we just wanted to add to the end, we'd do this:
-            listModel.addElement(foodName.getText());
+            float consumed = Float.parseFloat(JOptionPane.showInputDialog("How much was consumed?"));
+            Food addFood = eatFood(name, consumed);
+            listModel.addElement(name + " " + addFood.calculateCalories() + " kcal");
 
 
             //Reset the text field.
@@ -164,9 +153,7 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
             list.ensureIndexIsVisible(index);
         }
 
-        //This method tests for string equality. You could certainly
-        //get more sophisticated about the algorithm.  For example,
-        //you might want to ignore white space and capitalization.
+        //EFFECTS: Checks that the specified food is in the database
         protected boolean notInDatabase(String name) {
             for (Food f : Gui.savedFoods.getFoods()) {
                 if (f.getName().equals(name)) {
@@ -177,29 +164,44 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
             return false;
         }
 
-        //Required by DocumentListener.
+        //EFFECTS: Creates a copy of a food and sets its consumed field
+        protected Food eatFood(String name, float consumed) {
+            for (Food f : Gui.savedFoods.getFoods()) {
+                if (f.getName().equals(name)) {
+                    Food newFood = Food.eatFood(f);
+                    newFood.setConsumed(consumed);
+                }
+            }
+            return (new Food(5, 5, 5, "5", 5, 5, "5"));
+        }
+
+        //EFFECTS: Gives notification that something was inserted into document
         public void insertUpdate(DocumentEvent e) {
             enableButton();
         }
 
-        //Required by DocumentListener.
+        //EFFECTS: notifies that portion of the document has been removed
         public void removeUpdate(DocumentEvent e) {
             handleEmptyTextField(e);
         }
 
-        //Required by DocumentListener.
+        //EFFECTS: notifies that attribute(s) were changed
         public void changedUpdate(DocumentEvent e) {
             if (!handleEmptyTextField(e)) {
                 enableButton();
             }
         }
 
+        // MODIFIES: this
+        // EFFECTS: enables button
         private void enableButton() {
             if (!alreadyEnabled) {
                 button.setEnabled(true);
             }
         }
 
+        // MODIFIES: this
+        // EFFECTS: checks if the text field is empty and changes status of delete method
         private boolean handleEmptyTextField(DocumentEvent e) {
             if (e.getDocument().getLength() <= 0) {
                 button.setEnabled(false);
@@ -210,26 +212,24 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
         }
     }
 
-    //This method is required by ListSelectionListener.
+    // MODIFIES: this
+    //EFFECTS: Enables and disables delete button
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 
             if (list.getSelectedIndex() == -1) {
-                //No selection, disable fire button.
+                //No selection, disable delete button.
                 deleteButton.setEnabled(false);
 
             } else {
-                //Selection, enable the fire button.
+                //Selection, enable the delete button.
                 deleteButton.setEnabled(true);
             }
         }
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
+    // MODIFIES: this
+    // EFFECTS: creates gui
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Test()");

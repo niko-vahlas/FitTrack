@@ -1,9 +1,1 @@
-{"Foods": [{
-    "carb": 5,
-    "consumed": 10,
-    "unit": "grams",
-    "protein": 5,
-    "name": "chips",
-    "fat": 5,
-    "serving": 5
-}]}
+{"Foods": []}

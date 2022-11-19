@@ -10,35 +10,19 @@ import javax.swing.event.*;
 
 import static java.lang.Float.parseFloat;
 
-/* Test().java requires no other files. */
+// FoodDatabase Panel, the third panel
 public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
     private JList list;
-    private DefaultListModel listModel;
+    private static DefaultListModel listModel;
 
     private static final String addFoodString = "Add Food";
     private static final String deleteFoodString = "Delete Food";
     private JButton deleteButton;
-    private JTextField foodName;
-    private Foods currentFoods;
-    private Foods savedFoods;
 
-
+    //EFFECTS: Creates food database panel
     public FoodDatabasePanel() {
         super(new BorderLayout());
-        //this.currentFoods = currentFoods;
-        //this.savedFoods = savedFoods;
         listModel = new DefaultListModel();
-        /*for (Food f : currentFoods.getFoods()) {
-            String name = f.getName();
-            String unit = f.getUnit();
-            String consumed = String.valueOf(f.getConsumed());
-            int nameLength = name.length();
-            int unitLength = unit.length();
-            int consumedLength = consumed.length();
-
-         */
-        listModel.addElement("Example food 0 0");
-
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -52,50 +36,39 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
         AddListener addListener = new AddListener(addButton);
         addButton.setActionCommand(addFoodString);
         addButton.addActionListener(addListener);
-        addButton.setEnabled(false);
 
         deleteButton = new JButton(deleteFoodString);
         deleteButton.setActionCommand(deleteFoodString);
         deleteButton.addActionListener(new DeleteListener());
 
-        foodName = new JTextField(10);
-        foodName.addActionListener(addListener);
-        foodName.getDocument().addDocumentListener(addListener);
-        String name = listModel.getElementAt(
-                list.getSelectedIndex()).toString();
-
-        //Create a panel that uses BoxLayout.
         JPanel buttonPane = new JPanel();
-        buttonPane.setLayout(new BoxLayout(buttonPane,
-                BoxLayout.LINE_AXIS));
-        buttonPane.add(deleteButton);
-        buttonPane.add(Box.createHorizontalStrut(5));
-        buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
-        buttonPane.add(Box.createHorizontalStrut(5));
-        buttonPane.add(foodName);
-        buttonPane.add(addButton);
+        buttonPane.setLayout(new BorderLayout());
+        buttonPane.add(deleteButton, BorderLayout.WEST);
+
+        buttonPane.add(addButton, BorderLayout.EAST);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(listScrollPane, BorderLayout.CENTER);
         add(buttonPane, BorderLayout.PAGE_END);
     }
 
-    /*public void setSavedFoods(Foods savedFoods) {
-        this.savedFoods = savedFoods;
-        for (Food f : this.savedFoods.getFoods()) {
-            String newFood = f.getName() + " " + f.getProtein();
-
+    // MODIFIES: this
+    // EFFECTS: Adds the previously saved foods to the list
+    public static void setSavedFoods() {
+        for (Food f : Gui.savedFoods.getFoods()) {
+            float totalKcal = f.getFat() * 9 + 4 * f.getCarb() + 4 * f.getProtein();
+            String newFood = f.getName() + " " + totalKcal + " kcal " + f.getProtein() + " protein " + "per "
+                    +
+                    f.getServing() + " " + f.getUnit();
             listModel.addElement(newFood);
         }
-    }*/
-
-    public void setSavedFoods() {
-        savedFoods = Gui.savedFoods;
     }
 
 
-
+    // Listener for delete food button
     class DeleteListener implements ActionListener {
+        // MODIFIES: this
+        // EFFECTS: performs deletion of food
         public void actionPerformed(ActionEvent e) {
             //This method can be called only if
             //there's a valid selection
@@ -103,12 +76,13 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
             int index = list.getSelectedIndex();
 
             String foodName = (String) listModel.getElementAt(index);
-            Gui.savedFoods.removeFood(foodName);
+            String[] splitString = foodName.split(" ");
+            Gui.savedFoods.removeFood(splitString[0]);
             listModel.remove(index);
 
             int size = listModel.getSize();
 
-            if (size == 0) { //Nobody's left, disable firing.
+            if (size == 0) { //Nobody's left, disable deleting.
                 deleteButton.setEnabled(false);
 
             } else { //Select an index.
@@ -123,53 +97,42 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
         }
     }
 
-    //This listener is shared by the text field and the hire button.
+    //This listener is shared by the text field and the add button.
     class AddListener implements ActionListener, DocumentListener {
-        private boolean alreadyEnabled = false;
+        private boolean alreadyEnabled = true;
         private JButton button;
 
+        // EFFECTS: creates new listener for the add button
         public AddListener(JButton button) {
             this.button = button;
         }
 
-        //Required by ActionListener.
+        //MODIFIES: this
+        // EFFECTS: adds food to the list and to saved foods
         public void actionPerformed(ActionEvent e) {
-            String name = foodName.getText();
-            String[] splitString = name.split(" ");
-
-            //User didn't type in a unique name...
-            if ((splitString[0].equals("")) || alreadyInDatabase(splitString[3]))  {
-                Toolkit.getDefaultToolkit().beep();
-                foodName.requestFocusInWindow();
-                foodName.selectAll();
+            String nameFood = JOptionPane.showInputDialog("Please enter the name of the food");
+            float fatGrams = Float.parseFloat(JOptionPane
+                    .showInputDialog("Please enter the grams of fat per serving size"));
+            float proteinGrams = Float.parseFloat(JOptionPane
+                    .showInputDialog("Please enter the grams of protein per serving size"));
+            float carbGrams = Float.parseFloat(JOptionPane
+                    .showInputDialog("Please enter the grams of carbohydrates per serving size"));
+            String unit = JOptionPane.showInputDialog("Please enter the unit");
+            float servingSize = Float.parseFloat(JOptionPane.showInputDialog("Please enter the serving size"));
+            if (alreadyInDatabase(nameFood)) {
+                System.out.println("The food is already present in the database");
                 return;
             }
+            Gui.savedFoods.addFood(new Food(fatGrams, carbGrams, proteinGrams, nameFood, servingSize, 0, unit));
+            float totalKcal = fatGrams * 9 + 4 * carbGrams + 4 * proteinGrams;
+            String insert = nameFood + " " + totalKcal + " kcal " + proteinGrams + " protein " + "per "
+                    +
+                    servingSize + " " + unit;
+            listModel.addElement(insert);
 
-            int index = list.getSelectedIndex(); //get selected index
-            if (index == -1) { //no selection, so insert at beginning
-                index = 0;
-            } else {           //add after the selected item
-                index++;
-            }
-
-
-            //If we just wanted to add to the end, we'd do this:
-            listModel.addElement(foodName.getText());
-            Gui.savedFoods.addFood(new Food(parseFloat(splitString[0]), parseFloat(splitString[1]), parseFloat(splitString[2]), splitString[3], parseFloat(splitString[4]), parseFloat(splitString[5]),splitString[6]));
-
-
-            //Reset the text field.
-            foodName.requestFocusInWindow();
-            foodName.setText("");
-
-            //Select the new item and make it visible.
-            list.setSelectedIndex(index);
-            list.ensureIndexIsVisible(index);
         }
 
-        //This method tests for string equality. You could certainly
-        //get more sophisticated about the algorithm.  For example,
-        //you might want to ignore white space and capitalization.
+        //EFFECTS: Checks if food is already in database
         protected boolean alreadyInDatabase(String name) {
             for (Food f : Gui.savedFoods.getFoods()) {
                 if (f.getName().equals(name)) {
@@ -180,29 +143,33 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
             return false;
         }
 
-        //Required by DocumentListener.
+        //EFFECTS: Gives notification that something was inserted into document
         public void insertUpdate(DocumentEvent e) {
             enableButton();
         }
 
-        //Required by DocumentListener.
+        //EFFECTS: notifies that portion of the document has been removed
         public void removeUpdate(DocumentEvent e) {
             handleEmptyTextField(e);
         }
 
-        //Required by DocumentListener.
+        //EFFECTS: notifies that attribute(s) were changed
         public void changedUpdate(DocumentEvent e) {
             if (!handleEmptyTextField(e)) {
                 enableButton();
             }
         }
 
+        // MODIFIES: this
+        // EFFECTS: enables button
         private void enableButton() {
             if (!alreadyEnabled) {
                 button.setEnabled(true);
             }
         }
 
+        // MODIFIES: this
+        // EFFECTS: checks if the text field is empty and changes status of delete method
         private boolean handleEmptyTextField(DocumentEvent e) {
             if (e.getDocument().getLength() <= 0) {
                 button.setEnabled(false);
@@ -213,26 +180,24 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
         }
     }
 
-    //This method is required by ListSelectionListener.
+    // MODIFIES: this
+    //EFFECTS: Enables and disables delete button
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 
             if (list.getSelectedIndex() == -1) {
-                //No selection, disable fire button.
+                //No selection, disable delete button.
                 deleteButton.setEnabled(false);
 
             } else {
-                //Selection, enable the fire button.
+                //Selection, enable the delete button.
                 deleteButton.setEnabled(true);
             }
         }
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
+    // MODIFIES: this
+    // EFFECTS: creates gui
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Test()");
