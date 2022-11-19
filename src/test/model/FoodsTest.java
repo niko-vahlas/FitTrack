@@ -117,12 +117,21 @@ class FoodsTest {
     }
 
     @Test
-    void removeFoodFromSaved() {
+    void removeFoodFromSavedPresent() {
         savedFoods.addFood(chips);
         savedFoods.addFood(chicken);
         savedFoods.removeFood("chips");
         List<Food> foodsSaved = savedFoods.getFoods();
         assertTrue(foodsSaved.size() == 1);
+    }
+
+    @Test
+    void removeFoodFromSavedNotPresent() {
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chicken);
+        savedFoods.removeFood("c");
+        List<Food> foodsSaved = savedFoods.getFoods();
+        assertTrue(foodsSaved.size() == 2);
     }
 }
 
