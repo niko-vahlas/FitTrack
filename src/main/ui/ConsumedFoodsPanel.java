@@ -141,6 +141,7 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
 
             float consumed = Float.parseFloat(JOptionPane.showInputDialog("How much was consumed?"));
             Food addFood = eatFood(name, consumed);
+            Gui.currentDayFood.addFood(addFood);
             listModel.addElement(name + " " + addFood.calculateCalories() + " kcal");
 
 
@@ -170,6 +171,7 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
                 if (f.getName().equals(name)) {
                     Food newFood = Food.eatFood(f);
                     newFood.setConsumed(consumed);
+                    return newFood;
                 }
             }
             return (new Food(5, 5, 5, "5", 5, 5, "5"));

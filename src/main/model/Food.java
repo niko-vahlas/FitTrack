@@ -92,7 +92,7 @@ public class Food implements Writable {
 
     // EFFECTS: returns a foods total calories.
     public float calculateCalories() {
-        return this.consumed / serving * (protein * 4 + carb * 4 + fat * 9);
+        return (consumed / serving) * (protein * 4 + carb * 4 + fat * 9);
     }
 
     // EFFECTS: returns the grams of protein in a consumed food.

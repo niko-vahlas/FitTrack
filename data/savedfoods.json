@@ -1,9 +1,9 @@
 {"Foods": [{
-    "carb": 0,
+    "carb": 5,
     "consumed": 0,
-    "unit": "lbs",
-    "protein": 100,
-    "name": "luka",
+    "unit": "5",
+    "protein": 5,
+    "name": "5",
     "fat": 5,
     "serving": 5
 }]}
