@@ -12,7 +12,7 @@ public class EventLog implements Iterable<Event> {
     private static EventLog theLog;
     private Collection<Event> events;
 
-    // constructs an event log
+    //constructs an event log
     private EventLog() {
         events = new ArrayList<Event>();
     }
