@@ -4,51 +4,42 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-/**
- * Represents an alarm system event.
- */
+// Food logging event
 public class Event {
     private static final int HASH_CONSTANT = 13;
     private Date dateLogged;
     private String description;
 
-    /**
-     * Creates an event with the given description
-     * and the current date/time stamp.
-     * @param description  a description of the event
-     */
+
+    // Constructor for an event
+    // Creates an event with given description and current date/time
     public Event(String description) {
         dateLogged = Calendar.getInstance().getTime();
         this.description = description;
     }
 
-    /**
-     * Gets the date of this event (includes time).
-     * @return  the date of the event
-     */
+    // EFFECTS: returns the date
     public Date getDate() {
         return dateLogged;
     }
 
-    /**
-     * Gets the description of this event.
-     * @return  the description of the event
-     */
-    public String getDescription () {
+    // EFFECTS: returns the description
+    public String getDescription() {
         return description;
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == null)
+        if (other == null) {
             return false;
-
-        if (other.getClass() != this.getClass())
+        }
+        if (other.getClass() != this.getClass()) {
             return false;
-
+        }
         Event otherEvent = (Event) other;
 
-        return (this.dateLogged.equals(otherEvent.dateLogged) &&
+        return (this.dateLogged.equals(otherEvent.dateLogged)
+                &&
                 this.description.equals(otherEvent.description));
     }
 

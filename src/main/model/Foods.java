@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 import ui.FitnessApp;
+import ui.Gui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,27 @@ public class Foods implements Writable {
         return false;
     }
 
-    // EFFECTS: returns true if there is a food name that matches the string, returns false otherwise
+    // EFFECTS: removes food from saved list
     //MODIFIES: this
     public void removeFood(String s) {
         for (Food f : foods) {
             if (f.getName().equals(s)) {
                 foods.remove(f);
+                EventLog.getInstance().logEvent(new Event(f.getName() + " was removed from the food database"));
+            }
+
+        }
+    }
+
+    // EFFECTS: removes food from consumed list
+    //MODIFIES: this
+    public void removeFoodConsumed(String s) {
+        for (Food f : foods) {
+            if (f.getName().equals(s)) {
+                foods.remove(f);
+                EventLog.getInstance().logEvent(new Event(f.getName() + " was removed from the consumed "
+                        +
+                        "foods"));
             }
 
         }
@@ -50,6 +66,7 @@ public class Foods implements Writable {
             String nameOfFood = currentSavedFood.getName();
             if (nameOfFood.equals(s)) {
                 Food newFood = Food.eatFood(currentSavedFood);
+                EventLog.getInstance().logEvent(new Event(newFood.getName() + "was added"));
                 return newFood;
             }
         }
@@ -108,8 +125,19 @@ public class Foods implements Writable {
         return totalCarb;
     }
 
-    // EFFECTS: adds food to list.
+    // EFFECTS: adds food to database list
+    // MODIFIES: this
     public void addFood(Food f) {
+        EventLog.getInstance().logEvent(new Event(f.getName() + " was added to the database"));
+        this.foods.add(f);
+    }
+
+    //EFFECTS: adds food to consumed list
+    //MODIFIES: this
+    public void consumeFood(Food f) {
+        EventLog.getInstance().logEvent(new Event(f.getConsumed() + " " + f.getUnit() + " of "
+                +
+                f.getName() + " was consumed"));
         this.foods.add(f);
     }
 
@@ -122,6 +150,42 @@ public class Foods implements Writable {
     public List<Food> getFoods() {
         return foods;
     }
+
+    //EFFECTS: Checks that the specified food is not in the database
+    public boolean notInDatabase(String name) {
+        for (Food f : foods) {
+            if (f.getName().equals(name)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    //EFFECTS: Checks that the specified food is not in the database
+    public boolean alreadyInDatabase(String name) {
+        for (Food f : foods) {
+            if (f.getName().equals(name)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    // EFFECTS: returns a copy of a food with consumed field set
+    public Food eatFood(String name, float consumed) {
+        for (Food f : foods) {
+            if (f.getName().equals(name)) {
+                Food newFood = Food.eatFood(f);
+                newFood.setConsumed(consumed);
+                return newFood;
+            }
+        }
+        return (new Food(5, 5, 5, "5", 5, 5, "5"));
+    }
+
+
 
 
 

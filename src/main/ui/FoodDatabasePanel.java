@@ -119,7 +119,7 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
                     .showInputDialog("Please enter the grams of carbohydrates per serving size"));
             String unit = JOptionPane.showInputDialog("Please enter the unit");
             float servingSize = Float.parseFloat(JOptionPane.showInputDialog("Please enter the serving size"));
-            if (alreadyInDatabase(nameFood)) {
+            if (Gui.savedFoods.alreadyInDatabase(nameFood)) {
                 System.out.println("The food is already present in the database");
                 return;
             }
@@ -130,17 +130,6 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
                     servingSize + " " + unit;
             listModel.addElement(insert);
 
-        }
-
-        //EFFECTS: Checks if food is already in database
-        protected boolean alreadyInDatabase(String name) {
-            for (Food f : Gui.savedFoods.getFoods()) {
-                if (f.getName().equals(name)) {
-                    return true;
-                }
-
-            }
-            return false;
         }
 
         //EFFECTS: Gives notification that something was inserted into document
@@ -213,6 +202,7 @@ public class FoodDatabasePanel extends JPanel implements ListSelectionListener {
         frame.setVisible(true);
     }
 
+    // EFFECTS: calls the create and show gui
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.

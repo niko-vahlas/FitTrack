@@ -1,7 +1,6 @@
 package ui;
 
 import model.Food;
-import model.Foods;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -89,7 +88,7 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
 
             String foodName = (String) listModel.getElementAt(index);
             String[] splitString = foodName.split(" ");
-            Gui.currentDayFood.removeFood(splitString[0]);
+            Gui.currentDayFood.removeFoodConsumed(splitString[0]);
             listModel.remove(index);
 
             int size = listModel.getSize();
@@ -125,7 +124,7 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
             String name = foodName.getText();
 
             //User didn't type in a unique food...
-            if ((name.equals("")) || (!notInDatabase(name)))  {
+            if ((name.equals("")) || (!Gui.savedFoods.notInDatabase(name)))  {
                 Toolkit.getDefaultToolkit().beep();
                 foodName.requestFocusInWindow();
                 foodName.selectAll();
@@ -140,8 +139,8 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
             }
 
             float consumed = Float.parseFloat(JOptionPane.showInputDialog("How much was consumed?"));
-            Food addFood = eatFood(name, consumed);
-            Gui.currentDayFood.addFood(addFood);
+            Food addFood = Gui.savedFoods.eatFood(name, consumed);
+            Gui.currentDayFood.consumeFood(addFood);
             listModel.addElement(name + " " + addFood.calculateCalories() + " kcal");
 
 
@@ -154,28 +153,10 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
             list.ensureIndexIsVisible(index);
         }
 
-        //EFFECTS: Checks that the specified food is in the database
-        protected boolean notInDatabase(String name) {
-            for (Food f : Gui.savedFoods.getFoods()) {
-                if (f.getName().equals(name)) {
-                    return true;
-                }
 
-            }
-            return false;
-        }
 
         //EFFECTS: Creates a copy of a food and sets its consumed field
-        protected Food eatFood(String name, float consumed) {
-            for (Food f : Gui.savedFoods.getFoods()) {
-                if (f.getName().equals(name)) {
-                    Food newFood = Food.eatFood(f);
-                    newFood.setConsumed(consumed);
-                    return newFood;
-                }
-            }
-            return (new Food(5, 5, 5, "5", 5, 5, "5"));
-        }
+
 
         //EFFECTS: Gives notification that something was inserted into document
         public void insertUpdate(DocumentEvent e) {
@@ -247,6 +228,7 @@ public class ConsumedFoodsPanel extends JPanel implements ListSelectionListener 
         frame.setVisible(true);
     }
 
+    // EFFECTS: calls the create and show gui
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.

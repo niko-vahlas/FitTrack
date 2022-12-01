@@ -1,5 +1,7 @@
 package ui;
 
+import model.EventLog;
+import model.exception.LogException;
 import persistence.JsonReaderCurrentFood;
 import persistence.JsonReaderSavedFood;
 import persistence.JsonWriterCurrentFood;
@@ -17,6 +19,7 @@ import java.io.IOException;
 
 // Creates a HomePanel
 public class HomePanel extends JPanel {
+
     JPanel topPanel;
     JPanel bottomPanel;
     JPanel middlePanel;
@@ -24,6 +27,7 @@ public class HomePanel extends JPanel {
     private static final String loadFoodString = "Load Foods";
     private JButton saveButton;
     private JButton loadButton;
+
     private static final String JSON_STORE_SAVED_FOODS = "./data/savedfoods.json";
     private static final String JSON_STORE_CURRENT_FOODS = "./data/currentfoods.json";
     private JsonWriterCurrentFood jsonWriterCurrentFood;
@@ -147,6 +151,8 @@ public class HomePanel extends JPanel {
     }
 
 
+
+    // EFFECTS: Creates a home Panel
     public static void main(String[] args) {
         try {
             HomePanel app = new HomePanel();

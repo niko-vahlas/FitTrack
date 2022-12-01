@@ -1,9 +1,14 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Food;
 import model.Foods;
 
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -16,7 +21,6 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
@@ -26,6 +30,11 @@ public class Gui extends JPanel {
     static Foods savedFoods;
     static Foods currentDayFood;
 
+    private HomePanel panel1;
+    private ConsumedFoodsPanel panel2;
+    private FoodDatabasePanel panel3;
+
+
     // Constructor for Gui, makes a 3 tabbedPane
     public Gui() throws IOException {
         super(new GridLayout(1, 1));
@@ -33,17 +42,17 @@ public class Gui extends JPanel {
         savedFoods = new Foods();
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        HomePanel panel1 = new HomePanel();
+        panel1 = new HomePanel();
         tabbedPane.addTab("Home", null, panel1,
                 "Displays nutrition information");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-        ConsumedFoodsPanel panel2 = new ConsumedFoodsPanel();
+        panel2 = new ConsumedFoodsPanel();
         tabbedPane.addTab("Foods Consumed", null, panel2,
                 "Shows foods that have been consumed");
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-        FoodDatabasePanel panel3 = new FoodDatabasePanel();
+        panel3 = new FoodDatabasePanel();
         tabbedPane.addTab("Food Database", null, panel3,
                 "Shows foods that are present in database");
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
@@ -63,6 +72,21 @@ public class Gui extends JPanel {
         JFrame frame = new JFrame("NutritionTracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        WindowListener listener = new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent we) {
+                for (Event next : EventLog.getInstance()) {
+                    System.out.println(next.getDate());
+                    System.out.println(next.getDescription());
+                }
+                    frame.setVisible(false);
+                    frame.dispose();
+                }
+            };
+
+        frame.addWindowListener(listener);
+
         //Add content to the window.
         frame.add(new Gui(), BorderLayout.CENTER);
 
@@ -71,6 +95,7 @@ public class Gui extends JPanel {
         frame.setVisible(true);
     }
 
+    // EFFECTS: calls the create and show gui
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.

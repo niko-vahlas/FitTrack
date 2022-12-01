@@ -74,3 +74,15 @@ https://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html</
 <li>Click on the first tab</li>
 <li>Click load</li>
 </ol>
+
+<h4>Phase 4: Task 2</h4>
+<p>Wed Nov 30 18:57:31 PST 2022
+chips was added to the database
+Wed Nov 30 18:57:43 PST 2022
+chicken was added to the database
+Wed Nov 30 18:57:51 PST 2022
+1000.0 grams of chips was consumed
+Wed Nov 30 18:57:53 PST 2022
+chips was removed from the consumed foods
+Wed Nov 30 18:57:58 PST 2022
+chicken was removed from the food database</p>
