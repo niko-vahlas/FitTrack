@@ -47,12 +47,45 @@ class FoodsTest {
 
     }
 
+@Test
+void eatFoodTest() {
+        savedFoods.addFood(chips);
+        Food newFood = savedFoods.eatFood("chips", 10);
+    Food noFood = savedFoods.eatFood("gg", 10);
+        assertTrue(newFood.getConsumed() == 10);
+        assertTrue(noFood.getConsumed() == 5);
+}
 
+@Test
+void alreadyInDatabase() {
+        savedFoods.addFood(chips);
+        assertTrue(savedFoods.alreadyInDatabase("chips"));
+    assertFalse(savedFoods.alreadyInDatabase("cps"));
+}
 
+    @Test
+    void notInDatabase() {
+        savedFoods.addFood(chips);
+        assertTrue(savedFoods.alreadyInDatabase("chips"));
+        assertFalse(savedFoods.alreadyInDatabase("cps"));
+    }
 
+    @Test
+    void consumeFood() {
+        savedFoods.consumeFood(chips);
+        List<Food> foods = savedFoods.getFoods();
+        Food newFood = foods.get(0);
+        assertTrue(newFood.getName().equals("chips"));
+    }
 
+    @Test
+    void removeFoodConsumedTest() {
+        savedFoods.addFood(chips);
+        savedFoods.addFood(chocolate);
+        savedFoods.removeFoodConsumed("chips");
+        assertTrue(savedFoods.getFoods().size() == 1);
 
-
+    }
 
     @Test
         //
