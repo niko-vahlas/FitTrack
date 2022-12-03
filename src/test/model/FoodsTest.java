@@ -66,8 +66,8 @@ void alreadyInDatabase() {
     @Test
     void notInDatabase() {
         savedFoods.addFood(chips);
-        assertTrue(savedFoods.alreadyInDatabase("chips"));
-        assertFalse(savedFoods.alreadyInDatabase("cps"));
+        assertTrue(savedFoods.notInDatabase("chips"));
+        assertFalse(savedFoods.notInDatabase("cps"));
     }
 
     @Test
@@ -83,6 +83,8 @@ void alreadyInDatabase() {
         savedFoods.addFood(chips);
         savedFoods.addFood(chocolate);
         savedFoods.removeFoodConsumed("chips");
+        assertTrue(savedFoods.getFoods().size() == 1);
+        savedFoods.removeFoodConsumed("re");
         assertTrue(savedFoods.getFoods().size() == 1);
 
     }
