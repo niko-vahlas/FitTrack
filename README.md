@@ -1,6 +1,4 @@
-<title>Nutrition Tracker</title>
-
-<h1>Nutrition Tracker</h1>
+<h1>FitTrack</h1>
 
 <h3>Why:</h3>
 
@@ -11,78 +9,19 @@ would be convenient to have a desktop application as well.</p>
 <p>This project would be suited to those who want to lose weight, gain weight, or just become more aware of the food 
 that they are putting in their bodies.</p>
 
-<h3>Functions:</h3>
-
-<ul>
-    <li>Create and save recipes for reuse</li>
-    <li>Track kcal, protein, carbs, and fat</li>
-    <li>Calculate maintenance kcal for user height and weight</li>
-    <li>Change kcal goal depending on desired weight-loss/weight-gain</li>
-    <li>Input exercise to adjust kcal for the day</li>
-    <li>Create and save foods for reuse</li>
-    <li>Create and save workouts for reuse</li>
-    <li>Have specific workouts pre-made for the user</li>
-</ul>
-
  <h4>User Stories</h4>
     <ul>
         <li>As a user, I want to be able to make a food and view the carbohydrates.</li>
+        <li>As a user, I want to be able to make a food and view the protein.</li>
         <li>As a user, I want to be able to make a food and view the fat.</li>
         <li>As a user, I want to be able to exit the application.</li>
         <li>As a user, I want to be able to make a food and store it.</li>
         <li>As a user, I want to be able to save the state of my application.</li>
         <li>As a user, I want to be able to load the fitness app from file</li>
     </ul>
- 
-<p>All persistence classes are based on the supplied Workroom example for CPSC 210.</p>
-<p>All Json classes are based on the supplied Workroom example for CPSC 210.</p>
+    
 <p>The ConsumedFoodsPanel and FoodDatabase Panel are based on the List demo from  
 https://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html</p>
 <p>The Gui is based on the tabbed pane demo from   https://docs.oracle.com/javase/tutorial/uiswing
 /examples/components/index.html</p>
 
-<h1>Instructions for Grader</h1>
-<h4>How to generate event 1</h4>
-<ol>
-<li>Run program</li>
-<li>Click on the last tab</li>
-<li>Click add a food and fill out the fields with appropriate values</li>
-<li>The food should be on the list</li>
-</ol>
-
-<h4>How to generate event 2</h4>
-<ol>
-<li>Click on the last tab</li>
-<li>Click on the food that is on the list and hit delete</li>
-<li>The food will be deleted off the list</li>
-</ol>
-
-<h4>Visual component</h4>
-<ol>
-<li>Click on the first tab</li>
-<li>You will see the photo</li>
-</ol>
-
-<h4>Save</h4>
-<ol>
-<li>Click on the first tab</li>
-<li>Click save</li>
-</ol>
-
-<h4>Reload</h4>
-<ol>
-<li>Click on the first tab</li>
-<li>Click load</li>
-</ol>
-
-<h4>Phase 4: Task 2</h4>
-<p>Wed Nov 30 18:57:31 PST 2022
-chips was added to the database
-Wed Nov 30 18:57:43 PST 2022
-chicken was added to the database
-Wed Nov 30 18:57:51 PST 2022
-1000.0 grams of chips was consumed
-Wed Nov 30 18:57:53 PST 2022
-chips was removed from the consumed foods
-Wed Nov 30 18:57:58 PST 2022
-chicken was removed from the food database</p>
